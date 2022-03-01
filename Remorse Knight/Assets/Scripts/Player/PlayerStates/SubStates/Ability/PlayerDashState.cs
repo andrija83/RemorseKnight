@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDashState : MonoBehaviour
+public class PlayerDashState : PlayerAbilityState
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerDashState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public PlayerWallGrabState WallGrabState { get; private set; }
     public PlayerWallSlideState WallSlideState { get; private set; }
     public PlayerWallJumpState WallJumpState { get; private set; }
+    public PlayerDashState DashState { get; private set; }
     //public PlayerLedgeClimbState LedgeClimbState { get; private set; }
 
     public Animator Anim { get; private set; }
@@ -51,6 +52,7 @@ public class Player : MonoBehaviour
         WallSlideState = new PlayerWallSlideState(this, StateMachine, playerData, "wallSlide");
         WallClimbState = new PlayerWallClimbState(this, StateMachine, playerData, "wallClimb");
         WallJumpState = new PlayerWallJumpState(this, StateMachine, playerData, "inAir");
+        DashState = new PlayerDashState(this, StateMachine, playerData, "inAir"); // da vidim da napravim custom animaciju za dash 
         //LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledgeClimbState");
 
     }
@@ -166,5 +168,19 @@ public class Player : MonoBehaviour
         string richText = "<color=red><B>" + _stateText + "</B></color>";
 
         UnityEditor.Handles.Label(textPosition, richText, customStyle);
+
+
+        GUIStyle customStyle1 = new GUIStyle();
+        customStyle.fontSize = 15;   // can also use e.g. <size=30> in Rich Text
+        customStyle.richText = true;
+        Vector3 textPosition1 = transform.position + (Vector3.down * 1f);
+        string richText1 = "<color=red><B>" + isGrounded + "</B></color> <color=red><B>" + isTouchingWalls + "</B></color>";
+
+        UnityEditor.Handles.Label(textPosition1, richText1, customStyle1);
+
+
     }
+
+
+    
 }

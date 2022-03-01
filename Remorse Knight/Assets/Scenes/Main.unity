@@ -735,6 +735,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 77e35ab9-ade9-4074-ad42-cbefa94b6d83
     m_ActionName: Gameplay/Grab[/Keyboard/ctrl]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1190095749}
+        m_TargetAssemblyTypeName: InputPLayer, Assembly-CSharp
+        m_MethodName: OnDashInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2dff3e40-4fda-4ecc-9d1c-8c9c987b4c03
+    m_ActionName: Gameplay/Dash[/Keyboard/shift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
