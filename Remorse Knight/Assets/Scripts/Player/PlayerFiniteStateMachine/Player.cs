@@ -14,11 +14,11 @@ public class Player : MonoBehaviour
     public PlayerJumpState JumpState { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
     public PlayerLandState LandState { get; private set; }
-    public PlayerWallClimbState WallClimbState { get;private set; }
-    public PlayerWallGrabState WallGrabState { get; private set;}
-    public PlayerWallSlideState WallSlideState { get; private set;}
+    public PlayerWallClimbState WallClimbState { get; private set; }
+    public PlayerWallGrabState WallGrabState { get; private set; }
+    public PlayerWallSlideState WallSlideState { get; private set; }
     public PlayerWallJumpState WallJumpState { get; private set; }
-    public PlayerLedgeClimbState LedgeClimbState { get; private set; }  
+    //public PlayerLedgeClimbState LedgeClimbState { get; private set; }
 
     public Animator Anim { get; private set; }
     public Rigidbody2D RB { get; private set; }
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
         WallSlideState = new PlayerWallSlideState(this, StateMachine, playerData, "wallSlide");
         WallClimbState = new PlayerWallClimbState(this, StateMachine, playerData, "wallClimb");
         WallJumpState = new PlayerWallJumpState(this, StateMachine, playerData, "inAir");
-        LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledgeClimbState");
+        //LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledgeClimbState");
 
     }
     // Start is called before the first frame update
@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
         workspace.Set(velocity, CurrentVelocity.y);
         RB.velocity = workspace;
         CurrentVelocity = workspace;
-       
+
     }
     public void SetVelocityY(float velocity)
     {
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
         CurrentVelocity = workspace;
     }
 
-    public void SetVelocity(float velocity,Vector2 angle,int direction)
+    public void SetVelocity(float velocity, Vector2 angle, int direction)
     {
         angle.Normalize();
         workspace.Set(angle.x * velocity * direction, angle.y * velocity);
@@ -127,10 +127,10 @@ public class Player : MonoBehaviour
     {
         return Physics2D.Raycast(wallCheck.position, Vector2.right * -FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
     }
-    public bool CheckIfTouchingLedge()
-    {
-        return Physics2D.Raycast(ledgeCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
-    }
+    //public bool CheckIfTouchingLedge()
+    //{
+    //    return Physics2D.Raycast(ledgeCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
+    //}
 
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
     private void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
@@ -140,13 +140,17 @@ public class Player : MonoBehaviour
         FacingDirection *= -1;
         transform.Rotate(0, 180, 0);
     }
-    //public Vector2 DetermineCornerPostition()
-    //{       
-    //    RaycastHit2D xHit = Physics2D.Raycast(wallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
-    //    float xDistance = xHit.distance;
-    //    workspace.Set(xDistance * FacingDirection, 0);
-    //    RaycastHit2D yHit = Physics2D.Raycast(lef)
-    //}
+    public Vector2 DetermineCornerPostition()
+    {
+        RaycastHit2D xHit = Physics2D.Raycast(wallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
+        float xDistance = xHit.distance;
+        workspace.Set(xDistance * FacingDirection, 0);
+        RaycastHit2D yHit = Physics2D.Raycast(ledgeCheck.position + (Vector3)(workspace), Vector2.down, ledgeCheck.position.y - wallCheck.position.y, playerData.whatIsGround);
+        float yDist = yHit.distance;
+        workspace.Set(wallCheck.position.x + (xDistance * FacingDirection), ledgeCheck.position.y - yDist);
+        return workspace;
+        
+    }
 
 
 

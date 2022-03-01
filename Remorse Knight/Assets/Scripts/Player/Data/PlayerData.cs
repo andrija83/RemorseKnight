@@ -39,4 +39,8 @@ public class PlayerData : ScriptableObject
     public float wallJumpTime = 0.4f;
     public Vector2 wallJumpAngle = new Vector2(1, 2);
 
+    [Header("Ledge Clmb State")]
+    public Vector2 startOffSet;
+    public Vector2 stopOffSet;
+
 }

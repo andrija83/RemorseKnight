@@ -27,3 +27,5 @@ MonoBehaviour:
   wallJumpVelocity: 20
   wallJumpTime: 0.4
   wallJumpAngle: {x: 1, y: 2}
+  startOffSet: {x: 0.5, y: 1.65}
+  stopOffSet: {x: 1, y: 1}
