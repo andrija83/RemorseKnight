@@ -12,6 +12,8 @@ public class PlayerState
     protected PlayerData playerData;
     private string animBoolName; //what animation should be played
     protected float startTime;  //start of a state 
+    protected bool isAnimationFinished;
+    protected bool isExitingState; 
 
     public PlayerState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName)
     {
@@ -28,11 +30,14 @@ public class PlayerState
         player.Anim.SetBool(animBoolName, true);
         startTime = Time.time;
         Debug.Log(animBoolName);
+        isAnimationFinished = false;
+        isExitingState = false;
     }
     //gets called when we exit state
     public virtual void Exit()
     {
         player.Anim.SetBool(animBoolName, false);
+        isExitingState = true;
     }
     //gets called every frame
     public virtual void LogicUpdate()
@@ -50,10 +55,11 @@ public class PlayerState
     {
 
     }
+    public virtual void AnimationTrigger()
+    {
 
-
-
-
-
+    }
+    public virtual void AnimationFinishTrigger() => isAnimationFinished = true;
+  
 
 }

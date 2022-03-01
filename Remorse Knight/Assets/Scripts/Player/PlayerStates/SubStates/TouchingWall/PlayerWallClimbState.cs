@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallClimbState : MonoBehaviour
+public class PlayerWallClimbState : PlayerTouchingWallState
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerWallClimbState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void LogicUpdate()
     {
+        base.LogicUpdate();
+        player.SetVelocityY(playerData.wallClimbVelocity);
+        if (!isExitingState)
+        {
+            if (yInput != 1)
+            {
+                stateMachine.ChangeState(player.WallGrabState);
+            }
+        }
         
     }
 }
