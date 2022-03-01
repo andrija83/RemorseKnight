@@ -140,6 +140,15 @@ public class Player : MonoBehaviour
         FacingDirection *= -1;
         transform.Rotate(0, 180, 0);
     }
+    //public Vector2 DetermineCornerPostition()
+    //{       
+    //    RaycastHit2D xHit = Physics2D.Raycast(wallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
+    //    float xDistance = xHit.distance;
+    //    workspace.Set(xDistance * FacingDirection, 0);
+    //    RaycastHit2D yHit = Physics2D.Raycast(lef)
+    //}
+
+
 
     private void OnDrawGizmos()
     {
