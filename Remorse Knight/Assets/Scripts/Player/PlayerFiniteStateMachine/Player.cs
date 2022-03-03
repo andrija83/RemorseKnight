@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     public PlayerWallJumpState WallJumpState { get; private set; }
     public PlayerDashState DashState { get; private set; }
     //public PlayerLedgeClimbState LedgeClimbState { get; private set; }
+    public Transform DashDirectionIndicator { get; private set; }   
 
     public Animator Anim { get; private set; }
     public Rigidbody2D RB { get; private set; }
@@ -64,6 +65,7 @@ public class Player : MonoBehaviour
         RB = GetComponent<Rigidbody2D>();
         FacingDirection = 1;
         StateMachine.Initialize(IdleState);
+        DashDirectionIndicator = transform.Find("DashDirectionIndicator");
     }
 
     // Update is called once per frame
@@ -102,12 +104,19 @@ public class Player : MonoBehaviour
         RB.velocity = workspace;
         CurrentVelocity = workspace;
     }
+    public void SetVelocity(float velocity,Vector2 direction)
+    {
+        workspace = direction * velocity;
+        RB.velocity = workspace;
+        CurrentVelocity = workspace;
+    }
     public void SetVelocityZero()
     {
         RB.velocity = Vector2.zero;
         CurrentVelocity = Vector2.zero;
 
     }
+
 
 
     public void CheckFlip(int xInput)

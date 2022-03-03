@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   movementVeclocity: 10
-  jumpVelocity: 17
+  jumpVelocity: 22
   amountOfJumps: 1
   groundCheckRadius: 0.3
   whatIsGround:
@@ -29,3 +29,12 @@ MonoBehaviour:
   wallJumpAngle: {x: 1, y: 2}
   startOffSet: {x: 0.5, y: 1.65}
   stopOffSet: {x: 1, y: 1}
+  dashCooldown: 0.5
+  maxHoldTime: 1
+  holdTimeScale: 0.25
+  dashTime: 0.2
+  dashVelocity: 22
+  drag: 0
+  dashEndYMultiplier: 0.2
+  distanceBetweenAfterImages: 0.5
+  distBetweenAfterImages: 0.2

@@ -5,15 +5,17 @@ using UnityEngine.InputSystem;
 
 public class InputPLayer : MonoBehaviour
 {
+    private PlayerInput playerInput;
+    private Camera camera;
+    public Vector2 RawDashDirectionInput { get; private set; }
     public Vector2 RawMovementInput { get; private set; }
     public int NormalInputX { get; private set; }
-    public int NormalInputY { get; private set; }   
-    public bool JumpInput   { get; private set; }
+    public int NormalInputY { get; private set; }
+    public bool JumpInput { get; private set; }
     public bool JumpInputStop { get; private set; }
     public bool GrabInput { get; private set; }
     public bool DashInput { get; private set; }
     public bool DashInputStop { get; private set; }
-    
 
 
 
@@ -21,6 +23,11 @@ public class InputPLayer : MonoBehaviour
     private float jumpInputStartTime;
     private float dashInputStartTime;
 
+    private void Start()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        camera = Camera.main;
+    }
     private void Update()
     {
         CheckJumpInputHoldTime();
@@ -45,7 +52,7 @@ public class InputPLayer : MonoBehaviour
         {
             JumpInputStop = true;
         }
-        
+
     }
     public void OnGrabInput(InputAction.CallbackContext context)
     {
@@ -65,7 +72,7 @@ public class InputPLayer : MonoBehaviour
         {
             DashInput = true;
             DashInputStop = false;
-            dashInputStartTime = Time.time;
+             dashInputStartTime = Time.time;
 
         }
         else if (context.canceled)
@@ -74,12 +81,22 @@ public class InputPLayer : MonoBehaviour
         }
     }
 
+    public void OnDashDirectionInput(InputAction.CallbackContext context)
+    {
+        RawDashDirectionInput = context.ReadValue<Vector2>();
+
+        
+            RawDashDirectionInput = camera.ScreenToWorldPoint((Vector3)RawDashDirectionInput) - transform.position;
+
+        
+    }
+
     public void UseJumpInput() => JumpInput = false;
     public void UseDashInput() => DashInput = false;
 
     private void CheckDashInputHoldTime()
     {
-        if(Time.time >= dashInputStartTime + inputHoldTime)
+        if (Time.time >= dashInputStartTime + inputHoldTime)
         {
             DashInput = false;
         }
@@ -87,7 +104,7 @@ public class InputPLayer : MonoBehaviour
 
     private void CheckJumpInputHoldTime()
     {
-        if(Time.time > jumpInputStartTime + inputHoldTime)
+        if (Time.time > jumpInputStartTime + inputHoldTime)
         {
             JumpInput = false;
         }

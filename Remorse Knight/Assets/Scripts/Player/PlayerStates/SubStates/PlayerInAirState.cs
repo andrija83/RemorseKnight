@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class PlayerInAirState : PlayerState
 {
+    //input
     private int xInput;
-    private bool isGrounded;
     private bool jumpInput;
-    private bool coyoteTime;
-    private bool isJumping;
     private bool jumpInputStop;
-    private bool isTouchingWall;
     private bool grabInput;
+    private bool dashInput;
+
+
+    //checks
+    private bool isGrounded;
+    private bool isTouchingWall;
     private bool isTouchingWallBack;
-    private bool wallJumpCoyoteTime;
-    private float startWallJumpCoyoteTime;
     private bool oldIsTouchignWall;
     private bool oldIsTouchingWallback;
     private bool isTouchingLedge;
+
+    private bool isJumping;
+    private bool coyoteTime;
+    private bool wallJumpCoyoteTime;
+
+
+    private float startWallJumpCoyoteTime;
+
 
     public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
@@ -68,6 +77,7 @@ public class PlayerInAirState : PlayerState
         jumpInput = player.InputHandler.JumpInput;
         jumpInputStop = player.InputHandler.JumpInputStop;
         grabInput = player.InputHandler.GrabInput;
+        dashInput = player.InputHandler.DashInput;
 
         CheckJumpMultiplier();
 
@@ -98,11 +108,15 @@ public class PlayerInAirState : PlayerState
         {
             stateMachine.ChangeState(player.WallSlideState);
         }
+        else if (dashInput && player.DashState.CheckIfCanDash())
+        {
+            stateMachine.ChangeState(player.DashState);
+        }
         else
         {
             player.CheckFlip(xInput);
             player.SetVelocityX(playerData.movementVeclocity * xInput);
-            player.Anim.SetFloat("yVelocity", player.CurrentVelocity.y);
+            player.Anim.SetFloat("yvelocity", player.CurrentVelocity.y);
         }
     }
 

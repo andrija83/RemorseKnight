@@ -31,6 +31,7 @@ public class PlayerIdleState : PlayerGroundedState
         {
             stateMachine.ChangeState(player.MoveState);
         }
+        Debug.Log(xInput);
         
     }
 
