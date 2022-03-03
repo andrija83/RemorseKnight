@@ -7,6 +7,7 @@ public class InputPLayer : MonoBehaviour
 {
     private PlayerInput playerInput;
     private Camera camera;
+
     public Vector2 RawDashDirectionInput { get; private set; }
     public Vector2 RawMovementInput { get; private set; }
     public int NormalInputX { get; private set; }
@@ -17,11 +18,29 @@ public class InputPLayer : MonoBehaviour
     public bool DashInput { get; private set; }
     public bool DashInputStop { get; private set; }
 
+    public bool interactPressed {get; private set;}
+    private bool submitPressed = false;
 
 
     [SerializeField] private float inputHoldTime = 0.2f;
     private float jumpInputStartTime;
     private float dashInputStartTime;
+
+    private static InputPLayer instance;
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Debug.LogError("Found more than one Input Manager in the scene.");
+        }
+        instance = this;
+    }
+
+    public static InputPLayer GetInstance()
+    {
+        return instance;
+    }
 
     private void Start()
     {
@@ -90,6 +109,31 @@ public class InputPLayer : MonoBehaviour
 
         
     }
+    public void OnInteractButtonPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            interactPressed = true;
+        }
+        else if (context.canceled)
+        {
+            interactPressed = false;
+        }
+    }
+
+    public void SubmitPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            submitPressed = true;
+        }
+        else if (context.canceled)
+        {
+            submitPressed = false;
+        }
+    }
+
+
 
     public void UseJumpInput() => JumpInput = false;
     public void UseDashInput() => DashInput = false;
@@ -109,5 +153,16 @@ public class InputPLayer : MonoBehaviour
             JumpInput = false;
         }
     }
-
+    public bool GetInteractPressed()
+    {
+        bool result = interactPressed;
+        interactPressed = false;
+        return result;
+    }
+    public bool GetSubmitPressed()
+    {
+        bool result = submitPressed;
+        submitPressed = false;
+        return result;
+    }
 }

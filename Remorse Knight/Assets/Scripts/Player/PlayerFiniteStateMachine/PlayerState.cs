@@ -47,6 +47,7 @@ public class PlayerState
     //gets called every fixed update
     public virtual void PhysicsUpdate()
     {
+        
         DoChecks();
     }
 

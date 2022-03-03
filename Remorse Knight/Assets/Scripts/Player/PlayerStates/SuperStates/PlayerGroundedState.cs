@@ -37,6 +37,10 @@ public class PlayerGroundedState : PlayerState
 
     public override void LogicUpdate()
     {
+        if (DialogueManager.GetInstance().dialogueIsPlaying)
+        {
+            return;
+        }
         base.LogicUpdate();
         xInput = player.InputHandler.NormalInputX;
         jumpInput = player.InputHandler.JumpInput;
