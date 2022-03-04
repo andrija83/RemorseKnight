@@ -27,6 +27,9 @@ public class Player : MonoBehaviour
     public Vector2 CurrentVelocity { get; private set; }
     public int FacingDirection { get; private set; }
 
+    private Vector3 respawnPoint;
+    public GameObject[] fallDetector;
+
     //DEbugging 
     public bool isTouchingWalls;
     public bool isGrounded;
@@ -66,6 +69,7 @@ public class Player : MonoBehaviour
         FacingDirection = 1;
         StateMachine.Initialize(IdleState);
         DashDirectionIndicator = transform.Find("DashDirectionIndicator");
+        respawnPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -189,7 +193,17 @@ public class Player : MonoBehaviour
 
 
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "FallDetector")
+        {
+            transform.position = respawnPoint;
+        }
+        else if (collision.tag == "Checkpoint")
+        {
+            respawnPoint = transform.position;
+        }
+    }
 
 
-    
 }
