@@ -29,6 +29,7 @@ public class PlayerTouchingWallState : PlayerState
     public override void DoChecks()
     {
         base.DoChecks();
+        
         isGrounded = player.CheckIfGrounded();
         isTouchingWall = player.CheckIfTouchingWall();
         //isTouchingLedge = player.CheckIfTouchingLedge();

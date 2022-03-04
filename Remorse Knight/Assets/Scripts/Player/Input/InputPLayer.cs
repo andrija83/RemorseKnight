@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,8 +18,10 @@ public class InputPLayer : MonoBehaviour
     public bool GrabInput { get; private set; }
     public bool DashInput { get; private set; }
     public bool DashInputStop { get; private set; }
+    public bool[] AttackInputs { get; private set; }
 
-    public bool interactPressed {get; private set;}
+
+    public bool interactPressed { get; private set; }
     private bool submitPressed = false;
 
 
@@ -46,11 +49,38 @@ public class InputPLayer : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         camera = Camera.main;
+        int count = Enum.GetValues(typeof(CombatInputs)).Length;
+        AttackInputs = new bool[count];
     }
     private void Update()
     {
         CheckJumpInputHoldTime();
         CheckDashInputHoldTime();
+    }
+    public void OnPrimaryAttackInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AttackInputs[(int)CombatInputs.primary] = true;
+        }
+        if (context.canceled)
+        {
+            AttackInputs[(int)CombatInputs.primary] = false;
+
+        }
+       
+    }
+    public void OnSecondaryAttackInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AttackInputs[(int)CombatInputs.secondary] = true;
+        }
+        if (context.canceled)
+        {
+            AttackInputs[(int)CombatInputs.secondary] = false;
+
+        }
     }
     public void OnMoveInput(InputAction.CallbackContext context)
     {
@@ -91,7 +121,7 @@ public class InputPLayer : MonoBehaviour
         {
             DashInput = true;
             DashInputStop = false;
-             dashInputStartTime = Time.time;
+            dashInputStartTime = Time.time;
 
         }
         else if (context.canceled)
@@ -104,10 +134,10 @@ public class InputPLayer : MonoBehaviour
     {
         RawDashDirectionInput = context.ReadValue<Vector2>();
 
-        
-            RawDashDirectionInput = camera.ScreenToWorldPoint((Vector3)RawDashDirectionInput) - transform.position;
 
-        
+        RawDashDirectionInput = camera.ScreenToWorldPoint((Vector3)RawDashDirectionInput) - transform.position;
+
+
     }
     public void OnInteractButtonPressed(InputAction.CallbackContext context)
     {
@@ -165,4 +195,10 @@ public class InputPLayer : MonoBehaviour
         submitPressed = false;
         return result;
     }
+}
+
+public enum CombatInputs
+{
+    primary,
+    secondary
 }

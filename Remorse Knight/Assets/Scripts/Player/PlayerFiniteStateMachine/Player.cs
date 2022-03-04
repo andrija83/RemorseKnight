@@ -19,8 +19,15 @@ public class Player : MonoBehaviour
     public PlayerWallSlideState WallSlideState { get; private set; }
     public PlayerWallJumpState WallJumpState { get; private set; }
     public PlayerDashState DashState { get; private set; }
+    public PlayerAttackState PrimaryAttackState { get; private set; }
+    public PlayerAttackState SecondaryAttackState { get; private set; }
+    //public Core Core { get; private set; }
+
+
     //public PlayerLedgeClimbState LedgeClimbState { get; private set; }
-    public Transform DashDirectionIndicator { get; private set; }   
+
+    public PlayerInventory Inventory { get; private set; }
+    public Transform DashDirectionIndicator { get; private set; }
 
     public Animator Anim { get; private set; }
     public Rigidbody2D RB { get; private set; }
@@ -46,7 +53,10 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        //Core = GetComponentInChildren<Core>();
+
         StateMachine = new PlayerStateMachine();
+
         IdleState = new PlayerIdleState(this, StateMachine, playerData, "idle");
         MoveState = new PlayerMoveState(this, StateMachine, playerData, "move");
         JumpState = new PlayerJumpState(this, StateMachine, playerData, "inAir");
@@ -58,7 +68,8 @@ public class Player : MonoBehaviour
         WallJumpState = new PlayerWallJumpState(this, StateMachine, playerData, "inAir");
         DashState = new PlayerDashState(this, StateMachine, playerData, "inAir"); // da vidim da napravim custom animaciju za dash 
         //LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledgeClimbState");
-
+        PrimaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
+        SecondaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
     }
     // Start is called before the first frame update
     void Start()
@@ -67,17 +78,24 @@ public class Player : MonoBehaviour
         InputHandler = GetComponent<InputPLayer>();
         RB = GetComponent<Rigidbody2D>();
         FacingDirection = 1;
-        StateMachine.Initialize(IdleState);
         DashDirectionIndicator = transform.Find("DashDirectionIndicator");
         respawnPoint = transform.position;
+
+
+        Inventory = GetComponent<PlayerInventory>();
+        PrimaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.primary]);
+        //SecondaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.secondary]);
+        StateMachine.Initialize(IdleState);
+
     }
 
     // Update is called once per frame
     void Update()
     {
         CurrentVelocity = RB.velocity;
+        //Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
-        Debug.Log(CheckIfGrounded());
+        //Debug.Log(ground());
         isTouchingWalls = CheckIfTouchingWall();
         isGrounded = CheckIfGrounded();
 
@@ -108,7 +126,7 @@ public class Player : MonoBehaviour
         RB.velocity = workspace;
         CurrentVelocity = workspace;
     }
-    public void SetVelocity(float velocity,Vector2 direction)
+    public void SetVelocity(float velocity, Vector2 direction)
     {
         workspace = direction * velocity;
         RB.velocity = workspace;
@@ -155,17 +173,7 @@ public class Player : MonoBehaviour
         FacingDirection *= -1;
         transform.Rotate(0, 180, 0);
     }
-    public Vector2 DetermineCornerPostition()
-    {
-        RaycastHit2D xHit = Physics2D.Raycast(wallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
-        float xDistance = xHit.distance;
-        workspace.Set(xDistance * FacingDirection, 0);
-        RaycastHit2D yHit = Physics2D.Raycast(ledgeCheck.position + (Vector3)(workspace), Vector2.down, ledgeCheck.position.y - wallCheck.position.y, playerData.whatIsGround);
-        float yDist = yHit.distance;
-        workspace.Set(wallCheck.position.x + (xDistance * FacingDirection), ledgeCheck.position.y - yDist);
-        return workspace;
-        
-    }
+
 
 
 

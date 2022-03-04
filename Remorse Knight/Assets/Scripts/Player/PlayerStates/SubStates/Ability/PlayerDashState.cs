@@ -32,7 +32,7 @@ public class PlayerDashState : PlayerAbilityState
         base.Exit();
        if (player.CurrentVelocity.y > 0)
        {
-           player.SetVelocityY(player.CurrentVelocity.y * playerData.dashEndYMultiplier);
+            player.SetVelocityY(player.CurrentVelocity.y * playerData.dashEndYMultiplier);
        }
     }
 
