@@ -24,7 +24,11 @@ public class E1_MoveState : EnemyMoveState
     {
         /*da vidim da napravim isto neki random movement na odredjeno vreme i jos neke ideje*/
         base.LogicUpdate();
-        if (isDetectingWall || !isDetectingLedge)
+        if (isPlayerInMinAggroRange)
+        {
+            stateMachine.ChangeState(enemy.playerDetectedState);
+        }
+        else if (isDetectingWall || !isDetectingLedge)
         {
             enemy.idleState.SetFlipAfterIdle(true);
             stateMachine.ChangeState(enemy.idleState);

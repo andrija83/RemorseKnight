@@ -8,6 +8,7 @@ public class EnemyIdleState : State
     protected bool flipAfterIdle;
     protected float idleTime;
     protected bool isIdleTimeOver;
+    protected bool isPlayerInMinAggroRange;
 
 
     public EnemyIdleState(Entity entity, FiniteStateMachine stateMachine, string animBoolName, IdleStateData stateData) : base(entity, stateMachine, animBoolName)
@@ -26,6 +27,7 @@ public class EnemyIdleState : State
         entity.SetVelocity(0);
         isIdleTimeOver = false;
         SetRandomIdleTime();
+        isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
     }
 
     public override void Exit()
@@ -50,6 +52,9 @@ public class EnemyIdleState : State
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+
+        isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
+
     }
 
     public void SetFlipAfterIdle(bool flip)
@@ -58,6 +63,6 @@ public class EnemyIdleState : State
     }
     private void SetRandomIdleTime()
     {
-        idleTime = Random.Range(stateData.minIdleTime,stateData.maxIdleTime);
+        idleTime = Random.Range(stateData.minIdleTime, stateData.maxIdleTime);
     }
 }

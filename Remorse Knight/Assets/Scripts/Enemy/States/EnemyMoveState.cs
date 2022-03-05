@@ -8,6 +8,7 @@ public class EnemyMoveState : State
     protected MoveStateData moveStateData;
     protected bool isDetectingWall;
     protected bool isDetectingLedge;
+    protected bool isPlayerInMinAggroRange;
 
     public EnemyMoveState(Entity entity, FiniteStateMachine stateMachine, string animBoolName, MoveStateData moveStateData) : base(entity, stateMachine, animBoolName)
     {
@@ -25,6 +26,7 @@ public class EnemyMoveState : State
         entity.SetVelocity(moveStateData.movementSpeed);
         isDetectingLedge = entity.CheckLedge();
         isDetectingWall = entity.Checkwall();
+        isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
 
     }
 
@@ -43,6 +45,7 @@ public class EnemyMoveState : State
 
         base.PhysicsUpdate();
 
+        isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
         isDetectingLedge = entity.CheckLedge();
         isDetectingWall = entity.Checkwall();
     }
