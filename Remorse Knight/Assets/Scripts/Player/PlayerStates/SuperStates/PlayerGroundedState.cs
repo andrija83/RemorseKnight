@@ -11,6 +11,7 @@ public class PlayerGroundedState : PlayerState
     private bool grabInput;
     private bool isTouchingLedge;
     private bool dashInput;
+
     public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
     }
@@ -41,6 +42,18 @@ public class PlayerGroundedState : PlayerState
         {
             return;
         }
+
+        //ovde zaustavljam vreme kad inventory open ali da mogu da kliknem na inventory 
+        if (PlayerInventory.GetInstance().isInventoryOpen)
+        {
+            //Time.timeScale = 0;
+            return;
+        }
+        //Time.timeScale = 1;
+
+
+
+
         base.LogicUpdate();
         xInput = player.InputHandler.NormalInputX;
         jumpInput = player.InputHandler.JumpInput;

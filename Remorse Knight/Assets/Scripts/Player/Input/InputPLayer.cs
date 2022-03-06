@@ -24,6 +24,7 @@ public class InputPLayer : MonoBehaviour
     public bool interactPressed { get; private set; }
     private bool submitPressed = false;
 
+    public bool inventoryPressed { get; private set; }
 
     [SerializeField] private float inputHoldTime = 0.2f;
     private float jumpInputStartTime;
@@ -162,6 +163,17 @@ public class InputPLayer : MonoBehaviour
             submitPressed = false;
         }
     }
+    public void OnInventoryButtonPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            inventoryPressed = true;
+        }
+        else if (context.canceled)
+        {
+            inventoryPressed = false;
+        }
+    }
 
 
 
@@ -193,6 +205,12 @@ public class InputPLayer : MonoBehaviour
     {
         bool result = submitPressed;
         submitPressed = false;
+        return result;
+    }
+    public bool GetInventoryPressed()
+    {
+        bool result = inventoryPressed;
+        inventoryPressed = false;
         return result;
     }
 }
