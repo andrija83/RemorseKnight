@@ -6,7 +6,7 @@ public class Entity : MonoBehaviour
 {
     public FiniteStateMachine stateMachine;
     public EntityData entityData;
-
+    public AnimationToStateMachine animationToStateMachine { get; private set; }
     public Rigidbody2D RB { get; private set; }
     public Animator animator { get; private set; }
     public GameObject aliveGO { get; private set; }
@@ -27,6 +27,7 @@ public class Entity : MonoBehaviour
         RB = aliveGO.GetComponent<Rigidbody2D>();
         animator = aliveGO.GetComponent<Animator>();
         stateMachine = new FiniteStateMachine();
+        animationToStateMachine = aliveGO.GetComponent<AnimationToStateMachine>();
     }
 
     public virtual void Update()
@@ -61,12 +62,19 @@ public class Entity : MonoBehaviour
         return Physics2D.Raycast(playerCheck.position, aliveGO.transform.right, entityData.maxAggroDistance, entityData.whatIsPlayer);
 
     }
+    public virtual bool CheckPlayerInCloseRangeAction()
+    {
+        return Physics2D.Raycast(playerCheck.position, aliveGO.transform.right, entityData.closeRangeActionDistance, entityData.whatIsPlayer);
+    }    
     public virtual void OnDrawGizmos()
     {
+        Gizmos.color = Color.yellow;
         Gizmos.DrawLine(wallCheck.position,wallCheck.position + (Vector3) (Vector2.right * facingDirection * entityData.wallCheckDistance));
         Gizmos.DrawLine(ledgeCheck.position, ledgeCheck.position + (Vector3)(Vector2.down  * entityData.ledgeCheckDistance));
+        Gizmos.DrawLine(playerCheck.position, playerCheck.position + (Vector3)(Vector2.right * facingDirection * entityData.minAggroDistance));
 
     }
+  
     public virtual void Flip()
     {
         facingDirection *= -1;

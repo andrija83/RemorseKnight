@@ -19,6 +19,8 @@ public class EnemyIdleState : State
     public override void DoChecks()
     {
         base.DoChecks();
+        isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
+
     }
 
     public override void Enter()
@@ -27,7 +29,6 @@ public class EnemyIdleState : State
         entity.SetVelocity(0);
         isIdleTimeOver = false;
         SetRandomIdleTime();
-        isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
     }
 
     public override void Exit()
@@ -53,7 +54,6 @@ public class EnemyIdleState : State
     {
         base.PhysicsUpdate();
 
-        isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
 
     }
 

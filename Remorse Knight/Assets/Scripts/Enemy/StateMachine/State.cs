@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class State 
+public class State
 {
     protected FiniteStateMachine stateMachine;
     protected Entity entity;
@@ -21,7 +21,8 @@ public class State
     {
         DoChecks();
         startTime = Time.time;
-        entity.animator.SetBool(animBoolName, true); 
+        entity.animator.SetBool(animBoolName, true);
+        DoChecks();
     }
     public virtual void Exit()
     {
@@ -31,11 +32,11 @@ public class State
     public virtual void LogicUpdate()
     {
 
-    }    
+    }
     public virtual void PhysicsUpdate()
     {
+        DoChecks();
 
-        
     }
     public virtual void DoChecks()
     {

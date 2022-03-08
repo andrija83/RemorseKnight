@@ -2,33 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDetectedState : State
+public class EnemyChargeState : State
 {
-    protected PlayerDetectedData stateData;
+    protected ChargeStateData chargeStateData;
     protected bool isPlayerInMinAggroRange;
+    protected bool isDetectingLedge;
+    protected bool isDetectingWall;
+    protected bool isChargeTimeOver;
     protected bool isPlayerInMaxAggroRange;
-    protected bool performLongRangeAction;
     protected bool performCloseRangeAction;
 
-    public PlayerDetectedState(Entity entity, FiniteStateMachine stateMachine, string animBoolName, PlayerDetectedData stateData) : base(entity, stateMachine, animBoolName)
+
+
+    public EnemyChargeState(Entity entity, FiniteStateMachine stateMachine, string animBoolName, ChargeStateData chargeStateData) : base(entity, stateMachine, animBoolName)
     {
-        this.stateData = stateData;
+        this.chargeStateData = chargeStateData;
     }
 
     public override void DoChecks()
     {
         base.DoChecks();
         isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
+        isDetectingLedge = entity.CheckLedge();
+        isDetectingLedge = entity.Checkwall();
         isPlayerInMaxAggroRange = entity.CheckPlayerInMaxAggroRange();
         performCloseRangeAction = entity.CheckPlayerInCloseRangeAction();
+
+
     }
 
     public override void Enter()
     {
-
+        
         base.Enter();
-        performLongRangeAction = false;
-
+        isChargeTimeOver = false;
+        entity.SetVelocity(chargeStateData.chargeSpeed);
+        
 
     }
 
@@ -40,16 +49,18 @@ public class PlayerDetectedState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (Time.time >= startTime + stateData.longRangeActionTime)
+        if (Time.time >= startTime +  chargeStateData.chargeTime)
         {
-            performLongRangeAction = true;
+            isChargeTimeOver = true;
+
         }
+
+        
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-
-
+        
     }
 }

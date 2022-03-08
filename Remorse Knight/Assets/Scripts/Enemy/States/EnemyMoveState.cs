@@ -18,15 +18,15 @@ public class EnemyMoveState : State
     public override void DoChecks()
     {
         base.DoChecks();
+        isDetectingLedge = entity.CheckLedge();
+        isDetectingWall = entity.Checkwall();
+        isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
     }
 
     public override void Enter()
     {
         base.Enter();
         entity.SetVelocity(moveStateData.movementSpeed);
-        isDetectingLedge = entity.CheckLedge();
-        isDetectingWall = entity.Checkwall();
-        isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
 
     }
 
@@ -45,8 +45,5 @@ public class EnemyMoveState : State
 
         base.PhysicsUpdate();
 
-        isPlayerInMinAggroRange = entity.CheckPlayerInMinAggroRange();
-        isDetectingLedge = entity.CheckLedge();
-        isDetectingWall = entity.Checkwall();
     }
 }
